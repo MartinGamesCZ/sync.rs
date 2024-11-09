@@ -1,9 +1,18 @@
 {
-  "name": "sync.rs",
-  "module": "src/index.ts",
+  "name": "syncify.rs",
   "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "cd ../../test && bun install ../lib/dist && bun run src/index.ts",
+    "dist:build": "rm -rf dist && bun build --minify --outdir dist --target=bun src/index.ts && tsc --declaration --emitDeclarationOnly --declarationDir dist && cp package.json dist && cp README.md dist && cp LICENSE dist && mkdir dist/libraries && cp -r src/libraries/* dist/libraries/",
+    "dist:test": "bun run dist:build && cd dist && bun run test",
+    "dist:publish": "bun run dist:build && bun run dist:test && cd dist && npm publish --access=public"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "^1.1.13",
+    "@types/node": "^22.9.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
